@@ -7,19 +7,6 @@
 char* buff;
 char* start_point;
 int size;
-char* get_gi(char* p, int n) {
-	static char* m, * t;
-	m = (char*)malloc(n);
-	t = (char*)malloc(n);
-	if (m == NULL || n == NULL)
-		return NULL;
-	t = m;
-	while (n--) {
-		*m++ = *p++;
-	}
-	*(m) = '\0';
-	return t;
-}
 char* get_seq(char* p, int n) {
 	static char* m, * t;
 	m = (char*)malloc(size- 1);
@@ -50,18 +37,7 @@ int main(int argc, char* argv[])
 	size = ftell(file);
 	/*通过定位到文件末尾，读出文件大小size，或者也可通过下面注释掉的for循环读取文件大小size*/
 	rewind(file);
-	//char a;
-	//a='0';
-	//int ii;
-	//ii=0;
-	/*for(;a!=EOF;){
-	a = getc(file);
-
-	printf("a is %c%d\n",a,ii);
-	ii++;
-	}*/
-	//rewind(file);
-	//printf("ii number is %d\n",ii);
+	
 	printf("The file size is %d\n", size);
 	buff = (char*)malloc(size - 1);
 	start_point = (char*)malloc(size - 1);
@@ -94,9 +70,6 @@ int main(int argc, char* argv[])
 		}
 	}
 	/*for循环中记录了标识符的结束位置和核酸序列的起始位置，这里的标识符是指的第一个空格前面的字符*/
-	//printf("%d\n",i);
-	//char* mm = get_gi(start_point, pos);
-	/*mm指向标识符的首地址，被调函数get_gi其实是用指针变量实现的字符串的拷贝，末了需要加上结束符'\0'*/
 	char* seq = get_seq(start_point, seq_pos);
 	//printf("SEQ=\n%s\n", seq);
 	buff = start_point;
