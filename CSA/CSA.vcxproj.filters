@@ -18,6 +18,9 @@
     <None Include="NC_008253.fna">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="..\..\..\..\Desktop\大三上\生物信息\实验一\NC_008253.fna">
+      <Filter>源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="源.c">

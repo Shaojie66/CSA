@@ -142,6 +142,7 @@
     <ClCompile Include="源.c" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\Desktop\大三上\生物信息\实验一\NC_008253.fna" />
     <None Include="NC_008253.fna" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
