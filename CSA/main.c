@@ -1,12 +1,19 @@
-#define _CRT_SECURE_NO_WARNINGS
+ï»¿#define _CRT_SECURE_NO_WARNINGS
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include<algorithm>
+#include<iostream>
+#include<string.h>
+#include<string>
 //#define NUM 10*1024
 #define ERROR -1
+#define l 1000
 char* buff;
 char* start_point;
 int size;
+
 char* get_seq(char* p, int n) {
 	static char* m, * t;
 	m = (char*)malloc(size- 1);
@@ -16,18 +23,310 @@ char* get_seq(char* p, int n) {
 	t = m;
 	p = p + n;
 	while ((n < size) && (*p)) {
+		if (*p == '\n')
+			*p += 1;
 		*m++ = *p++;
 		n++;
 	}
 	*(m - 1) = '\0';
 	return t;
 }
+/*åŽç¼€æŽ’åºæ•°ç»„*/
+int cmp(const void* a, const void* b) {
+	//return strcmp((const char *)a,(const char *)b);
+	return strcmp((char*)a, (char*)b);
+}
+/*base_stepçš„å‡½æ•°ï¼Œè®¡ç®—æœ€åŽä¸€å°æ®µçš„Ïˆå€¼*/
+int* base_step(char T[]) {
+	char a[l][l];
+	strcpy(a[0], T);
+	int len = strlen(a[0]);
+	for (int i = 0; i < len-1; i++)
+	{
+		int k = 0;
+		for (int j = i + 1; j < len; j++) {
+			a[i + 1][k++] = a[0][j];
+		}
+		a[i + 1][k] = '\0';
+	}
+	qsort(a, len, sizeof(a[0]), cmp);
+	//æž„å»ºSAæ•°ç»„
+	int SA[l];
+	for (int p = 0; p < l; p++)
+	{
+		SA[p] = len - strlen(a[p]);
+	}
+	//æž„å»ºSA_1æ•°ç»„
+	int SA_1[l];
+	for (int q = 0; q < l; q++)
+	{
+		SA_1[SA[q]] == q;
+	}
+	//æž„å»ºÏˆå‡½æ•°
+	int Ïˆ[l];
+	for (int r = 0; r < l; r++)
+	{
+		Ïˆ[r] = SA_1[SA[r] + 1];
+	}
+	Ïˆ[0] = SA_1[0];
+	return	&Ïˆ[0];
+}
+
+//è®¡ç®—suffixåºåˆ—çš„å‡½æ•°
+int* base_sort(char T[], int x)
+{
+	char a[l][l];
+	strcpy(a[0], T);
+	int len = strlen(a[0]);
+	for (int i = 0; i < len - 1; i++) {
+		int k = 0;
+		for (int j = 0; j < len; j++)
+		{
+			a[j + 1][k++] = a[0][j];
+
+		}
+		a[i + 1][k] = '\0';
+	}
+	qsort(a, len, sizeof(a[0]), cmp);
+	//æž„å»ºSAæ•°ç»„
+	int SA[l];
+	for (int p = 0; p < l; p++)
+	{
+		SA[p] = len - strlen(a[p]);
+	}
+	//æž„å»ºSA_1æ•°ç»„
+	int SA_1[l];
+	for (int q = 0; q < l; q++)
+	{
+		SA_1[SA[q]] == q;
+	}
+	return &SA_1[0];
+	
+}
+//è®¡ç®—lc
+int* comulate_lc(int lc[], int T_SA[], char T3[], char T2[], int a, int b) {
+	for (int i = 0; i < b; i++)
+	{
+		lc[i] = 0;
+	}
+	for (int j = 0; j < b; j++)
+	{
+		for (int i = 0; i < a; i++)
+		{
+			if (T2[b-1-j]>T3[T_SA[i]])
+			{
+				lc[b - 1 - j]++;
+			}
+		}
+	}
+	return &lc[0];
+}
+//è®¡ç®—rc
+int* comulate_rc(int rc[], int T_SA[], char T3[], char T2[], int a, int b) {
+	for (int i = 0; i < b; i++)
+	{
+		rc[i] = a;
+	}
+	for (int j = 0; j < b; j++) {
+		for (int i = 0; i < a; i++)
+		{
+			if (T2[b-1-j]<T3[T_SA[a-1-i]])
+			{
+				rc[b - 1 - j]--;
+			}
+		}
+		rc[b - 1 - j]--;
+	}
+	return &rc[0];
+}
+//merge b
+int* merge_b(int order[], int Î¨_[], int lc[], int rc[], int order_suf[], int a, int b)
+{
+	for (int j = 0; j < b; j++)
+	{
+		int b1;
+		bool flag = false;
+		for (int i = 0; i < a; i++)
+		{
+			if (Î¨_[i] <= order[b - 1 - j])
+			{
+				if (lc[b - 1 - j] <= i && rc[b - 1 - j] >= i)
+				{
+					b1 = i;
+					flag = true;
+				}
+			}
+			//ç©ºé›†
+			if (j != b - 1)
+			{
+				if (!flag)
+				{
+					//è®¡ç®—è¿™ä¸ªorderæ—¶æœ‰ç‚¹é—®é¢˜
+					order[b - 1 - j - 1] = lc[b - 1 - j] - 1;
+					order_suf[b - 1 - j] = lc[b - 1 - j] - 1;
+				}
+				else
+				{
+					//è®¡ç®—è¿™ä¸ªorderæ—¶æœ‰ç‚¹é—®é¢˜
+					order[b - 1 - j - 1] = b1;
+					order_suf[b - 1 - j] = b1;
+					//cout << 6 - j<< endl;
+				}
+			}
+			else
+			{
+				if (!flag)
+				{
+					//è®¡ç®—è¿™ä¸ªorderæ—¶æœ‰ç‚¹é—®é¢˜
+					order_suf[b - 1 - j] = lc[b - 1 - j] - 1;
+				}
+				else
+				{
+					//è®¡ç®—è¿™ä¸ªorderæ—¶æœ‰ç‚¹é—®é¢˜
+					order_suf[b - 1 - j] = b1;
+					//cout << 6 - j<< endl;
+				}
+			}
+		}
+	}
+	return &order_suf[0];
+}
+
+int* comulate_f(int f[], int order_suf[], int T_SA_1[], int a, int b)
+{
+	for (int m = 0; m < a; m++)
+	{
+		int j1 = T_SA_1[m];
+		int number = 0;
+		for (int k = 0; k < b; k++)
+		{
+			if (order_suf[k] < j1)
+			{
+				number++;
+			}
+		}
+		f[j1] = j1 + number;
+
+	}
+	f[0] = 0;
+
+	return &f[0];
+}
+int* comulate_g(int g[], int order_suf[], int suffix_sort[], int a, int b)
+{
+	for (int x = 0; x < b; x++)
+	{
+		g[x] = order_suf[x] + suffix_sort[x] + 1;
+	}
+
+	return &g[0];
+}
+int* merge_c(int a, int b, int g[], int f[], int A[], int Î¨_[])
+{
+	for (int j = 1; j < a; j++)
+	{
+		A[f[j]] = f[Î¨_[j]];
+	}
+	A[g[b]] = f[Î¨_[0]];
+	for (int i = 1; i < b; i++)
+	{
+		A[g[i]] = g[i + 1];
+	}
+	
+	A[0] = g[1];
+	return &A[0];
+}
+int* merge(int a, int b, char T2[], char T3[], int A[], int Î¨_[], int T_SA_1[])
+{
+	int* suffix_sortt = base_sort( T2, b);
+	int suffix_sort[l*2];
+	for (int i = 0; i < b; i++)
+	{
+		suffix_sort[i] = suffix_sortt[i];
+		//cout << suffix_sort[i]<<endl;
+	}
+	int lllc[n];
+	int* llc = comulate_lc(lllc, T_SA_1, T3, T2, a, b);
+	int lc[n];
+	for (int i = 0; i < b; i++)
+	{
+		lc[i] = llc[i];
+		//cout << lc[i] << endl;
+	}
+	int rrrc[n];
+	int* rrc = comulate_rc(rrrc, T_SA_1, T3, T2, a, b);
+	int rc[n];
+	for (int i = 0; i < b; i++)
+	{
+		rc[i] = rrc[i];
+		//cout << rc[i] << endl;
+	}
+
+	//Mergeçš„bæ­¥
+
+	int order[n];
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+	order[b - 1] = T_SA_1[0];
+	int order_suf[n];
+	int* oorder_suf = merge_b(order, Î¨_, lc, rc, order_suf, a, b);
+	for (int i = 0; i < b; i++)
+	{
+		//order_suf[i] = oorder_suf[i];
+		cout << "çœ‹è¿™é‡Œ" << endl;
+		cout << order_suf[i] << endl;
+	}
+
+	//cout << "f" << endl;
+	//merge c(è®¡ç®—få‡½æ•°)
+	//Suppose SAâˆ’1 T[m] = j.Then SAâˆ’1 TiT[m] is equal to
+		//f(j) = j + #(order(sufk, T) â‰¤ j),
+	int f[n];
+	int* ff = comulate_f(f, order_suf, T_SA_1, a, b);
+	for (int i = 0; i < a; i++)
+	{
+		f[i] = ff[i];
+		//cout << f[i] << endl;
+	}
+
+	//cout << "g" << endl;
+	//merge c(è®¡ç®—gå‡½æ•°)
+	//For all j âˆˆ [1, ], SAâˆ’1 TiT [j] is equal to
+	//g(j) = order(sufj, T) + #(sufk â‰¤ sufj)
+	int ggg[n];
+	int g[n];
+	int* gg = comulate_g(g, order_suf, suffix_sort, a, b);
+	for (int i = 0; i < b; i++)
+	{
+		ggg[i] = gg[i];
+		//cout << g[i] << endl;
+	}
+	cout << "è¿™é‡Œ" << endl;
+	for (int i = 0; i < b + 1; i++)
+	{
+		g[0] = 0;
+		g[i + 1] = ggg[i];
+		//cout << g[i] << endl;
+	}
+
+
+	//mergeåˆå¹¶
+	cout << "ä»Žè¿™é‡Œå¼€å§‹" << endl;
+	//int A[n];
+	int* AA = merge_c(a, b, g, f, A, Î¨_);
+	for (int i = 0; i < a + b; i++)
+	{
+		A[i] = AA[i];
+		//cout << A[i] << endl;
+	}
+	return &A[0];
+}
+
 int main(int argc, char* argv[])
 {
 	FILE* file;
 	size = 0;
 	file = fopen("NC_008253.fna", "rt");
-	/*argv[1]ÎªÃüÁîÐÐ´«ÈëµÄµØÖ·£¬"rt"±íÊ¾ÒÔÖ»¶ÁµÄ·½Ê½´ò¿ªÒ»¸öÎÄ±¾ÎÄ¼þ*/
+	/*argv[1]ä¸ºå‘½ä»¤è¡Œä¼ å…¥çš„åœ°å€ï¼Œ"rt"è¡¨ç¤ºä»¥åªè¯»çš„æ–¹å¼æ‰“å¼€ä¸€ä¸ªæ–‡æœ¬æ–‡ä»¶*/
 	if (file == NULL)
 	{
 		printf("ERROR:cannot retrieve this file.\n");
@@ -35,7 +334,7 @@ int main(int argc, char* argv[])
 	}
 	fseek(file, 0L, SEEK_END);
 	size = ftell(file);
-	/*Í¨¹ý¶¨Î»µ½ÎÄ¼þÄ©Î²£¬¶Á³öÎÄ¼þ´óÐ¡size£¬»òÕßÒ²¿ÉÍ¨¹ýÏÂÃæ×¢ÊÍµôµÄforÑ­»·¶ÁÈ¡ÎÄ¼þ´óÐ¡size*/
+	/*é€šè¿‡å®šä½åˆ°æ–‡ä»¶æœ«å°¾ï¼Œè¯»å‡ºæ–‡ä»¶å¤§å°sizeï¼Œæˆ–è€…ä¹Ÿå¯é€šè¿‡ä¸‹é¢æ³¨é‡ŠæŽ‰çš„forå¾ªçŽ¯è¯»å–æ–‡ä»¶å¤§å°size*/
 	rewind(file);
 	
 	printf("The file size is %d\n", size);
@@ -44,11 +343,11 @@ int main(int argc, char* argv[])
 	if (buff == NULL || start_point == NULL)
 		return ERROR;
 	fread(buff, size - 1, 1, file);
-	/*½«fileÖ¸ÏòµÄÎÄ±¾ÎÄ¼þÄÚÈÝ¶ÁÈëbuff»º³åÇøÖÐ*/
+	/*å°†fileæŒ‡å‘çš„æ–‡æœ¬æ–‡ä»¶å†…å®¹è¯»å…¥buffç¼“å†²åŒºä¸­*/
 	start_point = buff;
-	/*start_pointÓÃÓÚ´æ´¢buffÖ¸ÏòµÄÊ×µØÖ·£¬ÓÃÓÚfreeµÈ*/
+	/*start_pointç”¨äºŽå­˜å‚¨buffæŒ‡å‘çš„é¦–åœ°å€ï¼Œç”¨äºŽfreeç­‰*/
 	//printf("%s\n", buff);
-	/*´òÓ¡³öÎÄ±¾ÎÄ¼þÄÚÈÝ£¬´Ë´¦ÓÃÓÚµ÷ÊÔ£¬printfÊÇ¸öºÜºÃµÄµ÷ÊÔ·½·¨£¬´Ë´¦¿É¼ì²éÎÄ±¾ÊÇ·ñ¶Á³ö£¬ÒÔ¼°ÊÇ·ñÕýÈ·µÈ*/
+	/*æ‰“å°å‡ºæ–‡æœ¬æ–‡ä»¶å†…å®¹ï¼Œæ­¤å¤„ç”¨äºŽè°ƒè¯•ï¼Œprintfæ˜¯ä¸ªå¾ˆå¥½çš„è°ƒè¯•æ–¹æ³•ï¼Œæ­¤å¤„å¯æ£€æŸ¥æ–‡æœ¬æ˜¯å¦è¯»å‡ºï¼Œä»¥åŠæ˜¯å¦æ­£ç¡®ç­‰*/
 	static int i;
 	//unsigned short *aa;
 	//printf("%c\n",*buff);
@@ -69,9 +368,10 @@ int main(int argc, char* argv[])
 			break;
 		}
 	}
-	/*forÑ­»·ÖÐ¼ÇÂ¼ÁË±êÊ¶·ûµÄ½áÊøÎ»ÖÃºÍºËËáÐòÁÐµÄÆðÊ¼Î»ÖÃ£¬ÕâÀïµÄ±êÊ¶·ûÊÇÖ¸µÄµÚÒ»¸ö¿Õ¸ñÇ°ÃæµÄ×Ö·û*/
+	/*forå¾ªçŽ¯ä¸­è®°å½•äº†æ ‡è¯†ç¬¦çš„ç»“æŸä½ç½®å’Œæ ¸é…¸åºåˆ—çš„èµ·å§‹ä½ç½®ï¼Œè¿™é‡Œçš„æ ‡è¯†ç¬¦æ˜¯æŒ‡çš„ç¬¬ä¸€ä¸ªç©ºæ ¼å‰é¢çš„å­—ç¬¦*/
 	char* seq = get_seq(start_point, seq_pos);
-	//printf("SEQ=\n%s\n", seq);
+	//printf("%d", strlen(seq));
+	/*printf("SEQ=\n%s\n", seq);*/
 	buff = start_point;
 
 	free(buff);
@@ -80,5 +380,6 @@ int main(int argc, char* argv[])
 	fclose(file);
 	//getchar();
 	return 0;
+
 
 }
