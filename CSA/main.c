@@ -13,6 +13,7 @@
 char* buff;
 char* start_point;
 int size;
+int length;
 
 char* get_seq(char* p, int n) {
 	static char* m, * t;
@@ -245,17 +246,17 @@ int* merge(int a, int b, char T2[], char T3[], int A[], int Ψ_[], int T_SA_1[])
 		suffix_sort[i] = suffix_sortt[i];
 		//cout << suffix_sort[i]<<endl;
 	}
-	int lllc[n];
+	int lllc[l];
 	int* llc = comulate_lc(lllc, T_SA_1, T3, T2, a, b);
-	int lc[n];
+	int lc[l];
 	for (int i = 0; i < b; i++)
 	{
 		lc[i] = llc[i];
 		//cout << lc[i] << endl;
 	}
-	int rrrc[n];
+	int rrrc[l];
 	int* rrc = comulate_rc(rrrc, T_SA_1, T3, T2, a, b);
-	int rc[n];
+	int rc[l];
 	for (int i = 0; i < b; i++)
 	{
 		rc[i] = rrc[i];
@@ -264,23 +265,18 @@ int* merge(int a, int b, char T2[], char T3[], int A[], int Ψ_[], int T_SA_1[])
 
 	//Merge的b步
 
-	int order[n];
+	int order[l];
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
 	order[b - 1] = T_SA_1[0];
-	int order_suf[n];
+	int order_suf[l];
 	int* oorder_suf = merge_b(order, Ψ_, lc, rc, order_suf, a, b);
-	for (int i = 0; i < b; i++)
-	{
-		//order_suf[i] = oorder_suf[i];
-		cout << "看这里" << endl;
-		cout << order_suf[i] << endl;
-	}
+	
 
 	//cout << "f" << endl;
 	//merge c(计算f函数)
 	//Suppose SA−1 T[m] = j.Then SA−1 TiT[m] is equal to
 		//f(j) = j + #(order(sufk, T) ≤ j),
-	int f[n];
+	int f[l];
 	int* ff = comulate_f(f, order_suf, T_SA_1, a, b);
 	for (int i = 0; i < a; i++)
 	{
@@ -292,15 +288,14 @@ int* merge(int a, int b, char T2[], char T3[], int A[], int Ψ_[], int T_SA_1[])
 	//merge c(计算g函数)
 	//For all j ∈ [1, ], SA−1 TiT [j] is equal to
 	//g(j) = order(sufj, T) + #(sufk ≤ sufj)
-	int ggg[n];
-	int g[n];
+	int ggg[l];
+	int g[l];
 	int* gg = comulate_g(g, order_suf, suffix_sort, a, b);
 	for (int i = 0; i < b; i++)
 	{
 		ggg[i] = gg[i];
 		//cout << g[i] << endl;
 	}
-	cout << "这里" << endl;
 	for (int i = 0; i < b + 1; i++)
 	{
 		g[0] = 0;
@@ -310,7 +305,6 @@ int* merge(int a, int b, char T2[], char T3[], int A[], int Ψ_[], int T_SA_1[])
 
 
 	//merge合并
-	cout << "从这里开始" << endl;
 	//int A[n];
 	int* AA = merge_c(a, b, g, f, A, Ψ_);
 	for (int i = 0; i < a + b; i++)
@@ -373,6 +367,68 @@ int main(int argc, char* argv[])
 	//printf("%d", strlen(seq));
 	/*printf("SEQ=\n%s\n", seq);*/
 	buff = start_point;
+	length = strlen(seq);
+
+	
+	//cout << a << "," << b<<endl;
+
+	int* Ψ = base_step((seq+length-l));
+	int Ψ_[l];
+	for (int i = 0; i < l; i++)
+	{
+		Ψ_[i] = Ψ[i];
+	}
+	for (int j; i < (length / l) + 1; i++) {
+
+		char T3[] = seq + length - (i + 1) * l;
+		char T2[l];
+		if ((length-(i+1)*l)>0&&(length-(i+1)*l<l))
+		{
+			for (int k = 0; k < length - (i + 1) * l; k++) {
+				T2 [k]= *(seq+i);
+			}
+			
+		}
+		else
+		{
+			for (int k = 0; k < l; k++) {
+				T2[k] = seq + length - (i + 2) * l + k;
+			}
+		}
+		int a = strlen(T3);
+		int b = strlen(T2);
+		int* T_SA_11 = base_sort(T3, a);
+		int T_SA_1[l];
+		for (int i = 0; i < l; i++)
+		{
+			T_SA_1[i] = T_SA_11[i];
+			//cout << T_SA_1[i];
+		}
+		int AA[l];
+		int* AAAA = merge(a, b, T2, T3, AA, Ψ_, T_SA_1);
+		int A[l];
+		for (int i = 0; i < a + b; i++)
+		{
+			A[i] = AA[i];
+		}
+
+		//字符串序列的合并
+		//T1_SA_1
+		int T1_SA_1[l];
+		T1_SA_1[a + b - 1] = 0;
+		for (int i = 0; i < a + b; i++)
+		{
+			for (int j = 0; j < a + b; j++)
+			{
+				if (A[j] == T1_SA_1[a + b - 1 - i])
+				{
+					T1_SA_1[a + b - 1 - i - 1] = j;
+				}
+			}
+		}
+	}
+
+
 
 	free(buff);
 	//free(mm);
