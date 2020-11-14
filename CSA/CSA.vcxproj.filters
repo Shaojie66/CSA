@@ -18,36 +18,33 @@
     <None Include="NC_008253.fna">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="..\..\..\..\Desktop\大三上\生物信息\实验一\NC_008253.fna">
-      <Filter>源文件</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Desktop\新建文件夹\main.c">
+    <ClInclude Include="BasicStep.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FileOperation.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="headfiletest.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperFunction.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MergeStep.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SABuildFunc.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleTest.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
       <Filter>源文件</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\BasicStep.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\FileOperation.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\headfiletest.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\HelperFunction.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\MergeStep.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\SABuildFunc.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\SimpleTest.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
