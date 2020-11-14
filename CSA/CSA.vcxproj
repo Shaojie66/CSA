@@ -141,6 +141,7 @@
   <ItemGroup>
     <None Include="NC_008253.bwt" />
     <None Include="NC_008253.fna" />
+    <None Include="实验报告.docx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicStep.h" />

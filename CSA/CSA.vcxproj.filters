@@ -21,6 +21,9 @@
     <None Include="NC_008253.bwt">
       <Filter>源文件</Filter>
     </None>
+    <None Include="实验报告.docx">
+      <Filter>源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicStep.h">

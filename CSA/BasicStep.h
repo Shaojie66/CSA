@@ -23,8 +23,6 @@ void baseStep(char* filePath, char* T, int* SA, int* SA_inverse, int* Psi,
     int* localPsi = NULL;
 
     // load the DNA sequence
-    printf("%s", filePath);
-    printf("%d", arrayLength);
     loadFnaData(filePath, arrayLength, T);
     printf("The whole DNA sequence plus a \'$\':\n");
 //    for(i = 0; i < arrayLength; i++) {
