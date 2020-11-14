@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="NC_008253.bwt" />
     <None Include="NC_008253.fna" />
   </ItemGroup>
   <ItemGroup>

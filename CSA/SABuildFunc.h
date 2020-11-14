@@ -381,6 +381,9 @@ void convertPsiToBWT(char* T, int* Psi, char* BWT) {
             BWT[i] = T[arrayLength - 1];
             continue;
         }
+        if (SA[i] - 1 < 0) {
+            break;
+        }
         BWT[i] = T[SA[i] - 1];
     }
 

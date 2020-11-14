@@ -27,9 +27,8 @@ int loadFnaData(char* filePath, int arrayLength, char* T) {
     int fnaDataPointer = 0;
 
     if(fp != NULL && fnaDataPointer < arrayLength) {
-        int ch1 = fgetc(fp);
-        while(ch1 != EOF) {
-            char ch = ch1;
+        char ch = fgetc(fp);
+        while(ch != EOF) {
             if(ch == '\n' && !ifData) {
                 // according to format of *.fna file
                 // data part is after the first line
@@ -47,7 +46,9 @@ int loadFnaData(char* filePath, int arrayLength, char* T) {
     }
     // add '$' to the end of the DNA seq
     T[fnaDataPointer++] = '$';
-    free(fp);
+   
+    fclose(fp);
+   
     return fnaDataPointer;
 }
 
@@ -79,7 +80,8 @@ int fnaDataSize(char* filePath) {
     } else {
         printf("failed to open file %s", filePath);
     }
-    free(fp);
+   
+    fclose(fp);
     return dataLength;
 }
 

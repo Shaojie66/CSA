@@ -115,15 +115,18 @@ int main() {
     // write BWT data into an output file
     writeBWTData(BWT, ARRAYLENGTH, BWTFILEHEADER, LINELENGTH, BWTFILEPATH);
 
-
+    /*printf("%x\n", T);
     free(T);
+    printf("%x\n", SA);
     free(SA);
+    printf("%x\n", SA_inverse);
     free(SA_inverse);
+    printf("%x\n", Psi);
     free(Psi);
-
+    printf("%x\n", BWT);
     free(BWT);
-
-    free(FILEPATH);
+    printf("%x\n", FILEPATH);
+    free(FILEPATH);*/
 
     return 0;
 }

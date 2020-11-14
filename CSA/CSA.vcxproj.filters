@@ -18,6 +18,9 @@
     <None Include="NC_008253.fna">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="NC_008253.bwt">
+      <Filter>源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicStep.h">

@@ -23,6 +23,8 @@ void baseStep(char* filePath, char* T, int* SA, int* SA_inverse, int* Psi,
     int* localPsi = NULL;
 
     // load the DNA sequence
+    printf("%s", filePath);
+    printf("%d", arrayLength);
     loadFnaData(filePath, arrayLength, T);
     printf("The whole DNA sequence plus a \'$\':\n");
 //    for(i = 0; i < arrayLength; i++) {
@@ -38,7 +40,16 @@ void baseStep(char* filePath, char* T, int* SA, int* SA_inverse, int* Psi,
     for(i = bi; i < arrayLength; i++) {
 //        printf("%c", T[i]);
         localT[i - bi] = T[i];
-        localSA[i - bi] = i - bi;
+        if (NULL == localSA) {
+            printf("无法动态申请内存！\n");
+            exit(-1);
+        }
+        else
+        {
+            localSA[i - bi] = i - bi;
+        }
+        
+       
     }
     printf("\n");
     printf("Length of the last part: %d\n", localLength);
