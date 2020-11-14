@@ -139,11 +139,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.c" />
+    <ClCompile Include="..\..\..\..\Desktop\新建文件夹\main.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\Desktop\大三上\生物信息\实验一\NC_008253.fna" />
     <None Include="NC_008253.fna" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\BasicStep.h" />
+    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\FileOperation.h" />
+    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\headfiletest.h" />
+    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\HelperFunction.h" />
+    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\MergeStep.h" />
+    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\SABuildFunc.h" />
+    <ClInclude Include="..\..\..\..\Desktop\新建文件夹\SimpleTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
